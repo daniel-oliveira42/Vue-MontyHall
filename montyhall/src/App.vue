@@ -1,12 +1,41 @@
 <template>
   <div id="app">
     <h1>Monty Hall Problem</h1>
+    <div class="form">
+      <div v-if="!started">
+        <label for="doorAmount">Número de portas: </label>
+        <input type="text" id="doorAmount" size="3"
+        v-model.number="doorAmount">
+      </div>
+      <div v-if="!started">
+          <label for="selectedDoor">Qual porta certa? </label>
+          <input type="text" id="selectedDoor" size="3"
+          v-model.number="selectedDoor">
+      </div>
+      <button v-if = "!started" @click= "started = true">Iniciar</button>
+      <button v-if = "started" @click = "started = false">Reiniciar</button>
+    </div>
+    <div class="doors" v-if = "started">
+      <div v-for= "i in doorAmount" :key= "i">
+        <Door :hasGift="i === selectedDoor" :number ="i"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
+import Door from './components/door'
 
+export default {
+  name: 'App',
+  components: { Door },
+  data: function() {
+    return {
+      started: false,
+      doorAmount: 3,
+      selectedDoor: null
+    }
+  }
 }
 </script>
 
@@ -14,6 +43,7 @@ export default {
  * {
    box-sizing: border-box;
    font-family: 'Montserrat', sans-serif;
+   user-select: none;
  }
 
  body {
@@ -30,7 +60,43 @@ export default {
  #app h1 {
    color: white;
    text-align: center;
+   text-transform: uppercase;
  }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  margin: 10px;
+  color: white;
+  font-size: 36px;
+  padding: 10px;
+  text-align: center;
+}
 
+.doors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  min-width: 200px;
+  width: 100%;
+  height: 50px;
+  border-radius: 50px;
+  background-color: rgb(223, 201, 5);
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+  margin-top: 50px;
+}
+
+input {
+  height: 36px;
+  font-size: 36px;
+}
 </style>
